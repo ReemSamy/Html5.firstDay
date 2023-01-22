@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>canvas</h2>
+    <canvas width="500" height="500" style="border:1px solid green " id="can"></canvas>
+    <script>
+        var c = document.getElementById("can");
+        var ctx = c.getContext("2d");
+        ctx.lineCap = "round";
+
+        var t = 1;
+        var vertices = [];
+        vertices.push({
+            x: 0,
+            y: 0
+        });
+        vertices.push({
+            x: 100,
+            y: 100
+        });
+        vertices.push({
+            x: 200,
+            y: 200
+        });
+        vertices.push({
+            x: 300,
+            y: 300
+        });
+        vertices.push({
+            x: 400,
+            y: 400
+        });
+        vertices.push({
+            x: 500,
+            y: 500
+        });
+
+       
+        ctx.lineWidth = 1;
+        
+        ctx.beginPath();
+        ctx.stroke();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "red";
+        
+        var points = calcWaypoints(vertices);
+        
+        animate(points);
+
+
+        function calcWaypoints(vertices) {
+            var waypoints = [];
+            for (var i = 1; i < vertices.length; i++) {
+                var pt0 = vertices[i - 1];
+                var pt1 = vertices[i];
+                var dx = pt1.x - pt0.x;
+                var dy = pt1.y - pt0.y;
+                for (var j = 0; j < 100; j++) {
+                    var x = pt0.x + dx * j / 100;
+                    var y = pt0.y + dy * j / 100;
+                    waypoints.push({
+                        x: x,
+                        y: y
+                    });
+                }
+            }
+            return (waypoints);
+        }
+
+
+        function animate() {
+            if (t <points.length - 1) 
+            {
+                requestAnimationFrame(animate);
+            }
+            else if (t == points.length - 1) {
+                alert("animation has stopped");
+            }
+            
+            ctx.beginPath();
+            ctx.moveTo(points[t - 1].x, points[t - 1].y);
+            ctx.lineTo(points[t].x, points[t].y);
+            ctx.stroke();
+            t++;
+        }
+    </script>
+</body>
+
+</html>
